@@ -15,4 +15,6 @@ public class App
     {
         return true;
     }
+
+    public static void functionJanek() { System.out.println("To moja funkcja"); }
 }
