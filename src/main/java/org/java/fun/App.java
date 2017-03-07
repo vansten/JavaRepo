@@ -9,6 +9,12 @@ public class App
     {
         System.out.println("Hello world");
         System.out.println("Hi Travis!");
+        System.out.println(isFive(5) ? "Yup" : "Nope");
+        System.out.println(isFive(6) ? "Yup" : "Nope");
+    }
+
+    protected static boolean isFive(int x) {
+        return x == 5;
     }
 
     public static boolean isTrue()
