@@ -9,6 +9,8 @@ public class App
     {
         System.out.println("Hello world");
         System.out.println("Hi Travis!");
+
+        System.out.println("Jesteś januszem.");
     }
 
     public static boolean isTrue()
