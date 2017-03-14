@@ -1,4 +1,8 @@
 .idea
+*.iws
+*.iml
+*.ipr
+!.mvn/wrapper/maven-wrapper.jar
 target
 *.class
 
