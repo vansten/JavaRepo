@@ -1,1 +1,6 @@
 language: java
+notifications:
+  email:
+    - krzysztof.stengert@hotmail.com
+    - johnnybe.beczcki@gmail.com
+    - MaverickCCCP@gmail.com
