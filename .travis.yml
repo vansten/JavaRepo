@@ -1,4 +1,5 @@
 language: java
+before_install: cd Budget
 notifications:
   email:
     - krzysztof.stengert@hotmail.com
