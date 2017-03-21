@@ -2,7 +2,6 @@
 *.iws
 *.iml
 *.ipr
-!.mvn/wrapper/maven-wrapper.jar
 target
 *.class
 
@@ -10,7 +9,8 @@ target
 .mtj.tmp/
 
 # Package Files #
-*.jar
+#*.jar
+!.mvn/wrapper/maven-wrapper.jar
 *.war
 *.ear
 

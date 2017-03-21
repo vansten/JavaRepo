@@ -1,5 +1,7 @@
 language: java
-before_install: cd Budget/demo
+before_install: 
+- cd Budget/demo
+- chmod +x mvnw
 notifications:
   email:
     - krzysztof.stengert@hotmail.com
