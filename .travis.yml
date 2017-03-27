@@ -6,6 +6,13 @@ services:
 before_install: 
 - cd Budget/demo
 - chmod +x mvnw
+addons:
+  apt:
+    packages:
+    - mysql-server-5.7
+    - mysql-client-core-5.7
+    - mysql-client-5.7
+before_script:
 - mysql -u root -e "create database if not exists budgetdb;"
 - mysql -u root -e "create user budget@localhost identified by 'koziadupa123';"
 - mysql -u root -e "grant all on budgetdb.* to budget@localhost;"
