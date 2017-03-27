@@ -1,7 +1,8 @@
 package com.budget;
 
-import org.junit.Before;
-import org.junit.Test;
+import com.budget.data.DatabaseController;
+import com.budget.data.User;
+import org.junit.*;
 
 import static org.junit.Assert.assertTrue;
 
@@ -9,66 +10,69 @@ import static org.junit.Assert.assertTrue;
  * Created by Maverick on 26.03.2017.
  */
 
-public class DatabaseTests
-{
-    DatabaseController db;
+public class DatabaseTests {
+    static DatabaseController db;
 
-    @Before
-    public void Initialize()
+    @BeforeClass
+    public static void initialize()
     {
         db = new DatabaseController();
     }
 
     @Test
-    public void TestConnection()
-    {
-        assertTrue(db.Initialize());
-        assertTrue(db.Shutdown());
+    public void testConnection() {
+        assertTrue(db.initialize());
+        assertTrue(db.shutdown());
     }
 
     @Test
-    public void TestClear()
-    {
-        assertTrue(db.Initialize());
-        assertTrue(db.Clear());
-        assertTrue(db.Shutdown());
+    public void testClear() {
+        assertTrue(db.initialize());
+        assertTrue(db.clear());
+        assertTrue(db.shutdown());
     }
 
     @Test
-    public void TestLoginEmpty()
-    {
+    public void testLoginEmpty() {
         // given
         final String userLogin = "waclaw";
         final String userPassword = "silnehaslo1";
-        db.Initialize();
-        db.Clear();
+        db.initialize();
+        db.clear();
 
         // when
-        User user = db.Login(userLogin, userPassword);
+        User user = db.loginUser(userLogin, userPassword);
 
         // then
         assertTrue(user == null);
 
-        db.Shutdown();
+        db.shutdown();
     }
 
     @Test
-    public void TestRegister()
-    {
+    public void testRegister() {
         // given
         final String userLogin = "waclaw";
         final String userPassword = "silnehaslo1";
-        db.Initialize();
-        db.Clear();
+        db.initialize();
+        db.clear();
 
         // when
-        User user = db.Register(userLogin, userPassword);
+        User user = db.registerUser(userLogin, userPassword);
 
         // then
         assertTrue(user != null);
         assertTrue(user.getLogin().equals(userLogin));
         assertTrue(user.getID() != User.INVALID_ID);
 
-        db.Shutdown();
+        db.shutdown();
+    }
+
+    @AfterClass
+    public static void cleanup()
+    {
+        db.initialize();
+        db.clear();
+        db.shutdown();
     }
 }

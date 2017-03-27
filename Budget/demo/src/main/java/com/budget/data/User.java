@@ -1,4 +1,4 @@
-package com.budget;
+package com.budget.data;
 
 /**
  * Created by Krzysztof on 3/26/2017.
@@ -10,11 +10,8 @@ public class User {
     protected String login;
     protected String password;
 
-    public User() {
 
-    }
-
-    public User(Integer id, String login, String password) {
+    protected User(Integer id, String login, String password) {
         this.id = id;
         this.login = login;
         this.password = password;

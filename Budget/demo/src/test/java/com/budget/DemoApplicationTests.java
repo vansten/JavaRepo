@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class DemoApplicationTests {
 
 	@Autowired
-	private HelloController controller;
+	private AppController controller;
 
 	@Test
 	public void contextLoads() {
