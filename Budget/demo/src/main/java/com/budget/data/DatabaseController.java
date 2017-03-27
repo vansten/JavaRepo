@@ -37,6 +37,12 @@ public class DatabaseController
         ID, VALUE, USERID, TIMESTAMP, NAME, SOURCENAME;
     }
 
+    public enum Condition
+    {
+        EQUAL, LESS_EQUAL, LESS, GREATER, GREATER_EQUAL, NOT_EQUAL
+    }
+
+    private static final String[] conditionToString = { "=", "<=", "<", ">", ">=", "!=" };
 
     private static final String USER_NAME = "budget";
     private static final String USER_PASSWORD = "koziadupa123";
@@ -239,16 +245,36 @@ public class DatabaseController
         return loggedInUsers;
     }
 
-    public final ArrayList<Object> getFromUsers(UserDatatype datatype) {
-        return getFromDatabaseInternal(datatype.name(), Database.USERS.name());
+    public final ArrayList<Object> getData(Integer dataTypeOrdinal, Database database) {
+        switch (database) {
+            case USERS:
+                return getFromDatabaseInternal(UserDatatype.values()[dataTypeOrdinal].name(), database.name());
+            case EARNINGS:
+                return getFromDatabaseInternal(EarningDatatype.values()[dataTypeOrdinal].name(), database.name());
+            case EXPENSES:
+                return getFromDatabaseInternal(ExpenseDatatype.values()[dataTypeOrdinal].name(), database.name());
+            default:
+                return new ArrayList<>();
+        }
     }
 
-    public final ArrayList<Object> getFromExpenses(ExpenseDatatype datatype) {
-        return getFromDatabaseInternal(datatype.name(), Database.EXPENSES.name());
-    }
-
-    public final ArrayList<Object> getFromEarnings(EarningDatatype datatype) {
-        return getFromDatabaseInternal(datatype.name(), Database.EARNINGS.name());
+    public final ArrayList<Object> getDataConditional(Integer dataTypeOrdinal, Database database,
+                                                      Integer dataTypeToCompareOrdinal, Condition cond, Object o) {
+        String oStr = o.getClass().equals(Instant.class) ? InstantToString((Instant)o) : o.toString();
+        String condStr = conditionToString[cond.ordinal()];
+        switch (database) {
+            case USERS:
+                return getFromDatabaseCondInternal(UserDatatype.values()[dataTypeOrdinal].name(),
+                        database.name(), UserDatatype.values()[dataTypeToCompareOrdinal].name(), condStr, oStr);
+            case EARNINGS:
+                return getFromDatabaseCondInternal(EarningDatatype.values()[dataTypeOrdinal].name(),
+                        database.name(), EarningDatatype.values()[dataTypeToCompareOrdinal].name(), condStr, oStr);
+            case EXPENSES:
+                return getFromDatabaseCondInternal(ExpenseDatatype.values()[dataTypeOrdinal].name(),
+                        database.name(), ExpenseDatatype.values()[dataTypeToCompareOrdinal].name(), condStr, oStr);
+            default:
+                return new ArrayList<>();
+        }
     }
 
     public final ArrayList<Expense> getAllExpenses() {
@@ -448,6 +474,32 @@ public class DatabaseController
         try
         {
             ResultSet rs = execQuerySQL("select " + colName + " from " + tableName + ";");
+            while (rs.next())
+            {
+                if(colName.equalsIgnoreCase("VALUE"))
+                {
+                    logins.add(rs.getFloat(1));
+                }
+                else
+                {
+                    logins.add(rs.getObject(1));
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return logins;
+    }
+
+    private final ArrayList<Object> getFromDatabaseCondInternal(String colName, String tableName,
+                                                                String colCondName, String cond, String o) {
+        ArrayList<Object> logins = new ArrayList<>();
+        try
+        {
+            ResultSet rs = execQuerySQL("select " + colName + " from " + tableName +
+                    " where " + colCondName + " " + cond + " '" + o + "';");
             while (rs.next())
             {
                 if(colName.equalsIgnoreCase("VALUE"))

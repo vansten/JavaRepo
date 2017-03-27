@@ -129,8 +129,10 @@ public class DatabaseTests {
         initDatabase();
 
         // when
-        ArrayList<Object> earnNames = db.getFromEarnings(DatabaseController.EarningDatatype.NAME);
-        ArrayList<Object> expsValues = db.getFromExpenses(DatabaseController.ExpenseDatatype.VALUE);
+        ArrayList<Object> earnNames = db.getData(DatabaseController.EarningDatatype.NAME.ordinal(),
+                DatabaseController.Database.EARNINGS);
+        ArrayList<Object> expsValues = db.getData(
+                DatabaseController.ExpenseDatatype.VALUE.ordinal(), DatabaseController.Database.EXPENSES);
 
         // then
         assertTrue(earnNames.size() == 3);
@@ -142,6 +144,38 @@ public class DatabaseTests {
         assertTrue(((Float)expsValues.get(0)).equals(100.0f));
         assertTrue(((Float)expsValues.get(1)).equals(50.0f));
         assertTrue(((Float)expsValues.get(2)).equals(1000.0f));
+
+        db.shutdown();
+    }
+
+    @Test
+    public void testGetFromDatabaseConditional() {
+        // given
+        db.initialize();
+        initDatabase();
+
+        // when
+        ArrayList<Object> earnValues = db.getDataConditional(DatabaseController.EarningDatatype.VALUE.ordinal(),
+                DatabaseController.Database.EARNINGS, DatabaseController.EarningDatatype.NAME.ordinal(),
+                DatabaseController.Condition.EQUAL, "Work");
+        ArrayList<Object> expsNames = db.getDataConditional(DatabaseController.ExpenseDatatype.NAME.ordinal(),
+                DatabaseController.Database.EXPENSES, DatabaseController.ExpenseDatatype.SOURCENAME.ordinal(),
+                DatabaseController.Condition.NOT_EQUAL, "Shopping");
+        ArrayList<Object> nameValues = db.getDataConditional(DatabaseController.EarningDatatype.NAME.ordinal(),
+                DatabaseController.Database.EARNINGS, DatabaseController.EarningDatatype.VALUE.ordinal(),
+                DatabaseController.Condition.EQUAL, 500.0f);
+
+        // then
+        assertTrue(earnValues.size() == 2);
+        assertTrue(((Float)earnValues.get(0)) == 5000.0f);
+        assertTrue(((Float)earnValues.get(1)) == 1000.0f);
+
+        assertTrue(expsNames.size() == 2);
+        assertTrue(((String)expsNames.get(0)).equals("Petrol"));
+        assertTrue(((String)expsNames.get(1)).equals("Flywheel"));
+
+        assertTrue(nameValues.size() == 1);
+        assertTrue(((String)nameValues.get(0)).equals("Drugs"));
 
         db.shutdown();
     }
