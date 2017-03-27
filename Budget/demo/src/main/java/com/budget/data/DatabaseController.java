@@ -129,7 +129,9 @@ public class DatabaseController
         loggedInUsers.remove(user);
     }
 
+    // Note that this function automatically logs user out.
     public boolean removeUser(User user) {
+        logout(user);
         return removeUser(user.id);
     }
 
@@ -143,17 +145,21 @@ public class DatabaseController
             Instant timestamp = Instant.now();
             Integer userID = user.getID();
             String sql =
-                    "insert into " + Database.EXPENSES.name() + " values " +
+                    "insert into " + Database.EXPENSES.name() +
+                    " (" + ExpenseDatatype.VALUE + ", " + ExpenseDatatype.USERID + ", " +
+                    ExpenseDatatype.TIMESTAMP + ", " + ExpenseDatatype.NAME + ", " +
+                    ExpenseDatatype.SOURCENAME + ") " +
+                    " values " +
                     "(" +
                     value.toString() + ", " +
                     userID.toString() + ", " +
-                    timestamp.toString() + ", " +
-                    name + ", " +
-                    sourceName +
+                    "'" + InstantToString(timestamp) + "', " +
+                    "'" + name + "', " +
+                    "'" + sourceName + "'" +
                     ")";
 
             Statement insert = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            insert.executeUpdate("");
+            insert.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
             ResultSet rs = insert.getGeneratedKeys();
             if(rs.next())
@@ -179,17 +185,21 @@ public class DatabaseController
             Instant timestamp = Instant.now();
             Integer userID = user.getID();
             String sql =
-                    "insert into " + Database.EARNINGS.name() + " values " +
-                            "(" +
-                            value.toString() + ", " +
-                            userID.toString() + ", " +
-                            timestamp.toString() + ", " +
-                            name + ", " +
-                            sourceName +
-                            ")";
+                    "insert into " + Database.EARNINGS.name() +
+                    " (" + EarningDatatype.VALUE + ", " + EarningDatatype.USERID + ", " +
+                    EarningDatatype.TIMESTAMP + ", " + EarningDatatype.NAME + ", " +
+                    EarningDatatype.SOURCENAME + ") " +
+                    " values " +
+                    "(" +
+                    value.toString() + ", " +
+                    userID.toString() + ", " +
+                    "'" + InstantToString(timestamp) + "', " +
+                    "'" + name + "', " +
+                    "'" + sourceName + "'" +
+                    ")";
 
             Statement insert = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            insert.executeUpdate("");
+            insert.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
             ResultSet rs = insert.getGeneratedKeys();
             if(rs.next())
@@ -229,8 +239,16 @@ public class DatabaseController
         return loggedInUsers;
     }
 
-    public final ArrayList<Object> getFromDatabase(UserDatatype datatype, Database database) {
-        return getFromDatabaseInternal(datatype.name(), database.name());
+    public final ArrayList<Object> getFromUsers(UserDatatype datatype) {
+        return getFromDatabaseInternal(datatype.name(), Database.USERS.name());
+    }
+
+    public final ArrayList<Object> getFromExpenses(ExpenseDatatype datatype) {
+        return getFromDatabaseInternal(datatype.name(), Database.EXPENSES.name());
+    }
+
+    public final ArrayList<Object> getFromEarnings(EarningDatatype datatype) {
+        return getFromDatabaseInternal(datatype.name(), Database.EARNINGS.name());
     }
 
     public final ArrayList<Expense> getAllExpenses() {
@@ -386,7 +404,7 @@ public class DatabaseController
                     EarningDatatype.ID.name() + " int not null auto_increment, " +
                     EarningDatatype.VALUE.name() + " double not null, " +
                     EarningDatatype.USERID.name() + " int not null, " +
-                    EarningDatatype.TIMESTAMP.name() + " datetime, " +
+                    EarningDatatype.TIMESTAMP.name() + " timestamp, " +
                     EarningDatatype.NAME.name() + " varchar(32)," +
                     EarningDatatype.SOURCENAME.name() + " varchar(32)," +
                     "primary key(" + EarningDatatype.ID.name() + ")" +
@@ -396,7 +414,7 @@ public class DatabaseController
                     ExpenseDatatype.ID.name() + " int not null auto_increment," +
                     ExpenseDatatype.VALUE.name() + " double not null," +
                     ExpenseDatatype.USERID.name() + " int not null," +
-                    ExpenseDatatype.TIMESTAMP.name() + " datetime," +
+                    ExpenseDatatype.TIMESTAMP.name() + " timestamp," +
                     ExpenseDatatype.NAME.name() + "  varchar(32)," +
                     ExpenseDatatype.SOURCENAME.name() + "  varchar(32)," +
                     "primary key(" + ExpenseDatatype.ID.name() + ")" +
@@ -432,7 +450,14 @@ public class DatabaseController
             ResultSet rs = execQuerySQL("select " + colName + " from " + tableName + ";");
             while (rs.next())
             {
-                logins.add(rs.getObject(1));
+                if(colName.equalsIgnoreCase("VALUE"))
+                {
+                    logins.add(rs.getFloat(1));
+                }
+                else
+                {
+                    logins.add(rs.getObject(1));
+                }
             }
         }
         catch (SQLException e)
@@ -450,7 +475,7 @@ public class DatabaseController
                     rs.getInt(1),
                     rs.getFloat(2),
                     rs.getInt(3),
-                    rs.getDate(4).toInstant(),
+                    rs.getTimestamp(4).toInstant(),
                     rs.getString(5),
                     rs.getString(6)
             ));
@@ -465,7 +490,7 @@ public class DatabaseController
                     rs.getInt(1),
                     rs.getFloat(2),
                     rs.getInt(3),
-                    rs.getDate(4).toInstant(),
+                    rs.getTimestamp(4).toInstant(),
                     rs.getString(5),
                     rs.getString(6)
             ));
@@ -483,5 +508,12 @@ public class DatabaseController
         Statement statement = connection.createStatement();
         statement.closeOnCompletion();
         return statement.executeQuery(sql);
+    }
+
+    private String InstantToString(Instant i) {
+        String ts = i.toString();
+        String[] parts = ts.split("T");
+        ts = parts[0] + " " + parts[1].substring(0, 8);
+        return ts;
     }
 }
