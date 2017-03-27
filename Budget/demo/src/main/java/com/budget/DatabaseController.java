@@ -19,7 +19,7 @@ public class DatabaseController
 {
     private static final String USER_NAME = "budget";
     private static final String USER_PASSWORD = "koziadupa123";
-    private static final String DATABASE_NAME = "budgetDB";
+    private static final String DATABASE_NAME = "budgetdb";
     private static final String DATABASE_SERVER = "localhost:3306";
     private static final String DATABASE_URL = "jdbc:mysql://" + DATABASE_SERVER + "/" + DATABASE_NAME;
 
