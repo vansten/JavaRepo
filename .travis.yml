@@ -11,8 +11,9 @@ before_install:
 addons:
   apt:
     packages:
-    - mysql-server
-    - mysql-client
+    - mysql-server-5.6
+    - mysql-client-core-5.6
+    - mysql-client-5.6
 before_script:
 - mysql -u root -e "create database budgetdb;"
 - mysql -u root -e "create user budget@localhost identified by 'koziadupa123';"
