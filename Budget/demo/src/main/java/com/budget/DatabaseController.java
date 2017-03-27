@@ -44,14 +44,65 @@ public class DatabaseController
         return ShutdownConnection();
     }
 
-    public void Register()
+    // Beware of light-hearted using this function, as it erases all existing data!
+    public boolean Clear()
     {
+        try
+        {
+            ExecSQL("drop table users;");
+            ExecSQL("drop table earnings;");
+            ExecSQL("drop table expenses;");
 
+            return InitDatabase();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    public void Login()
+    public User Register(String login, String password)
     {
+        try
+        {
+            ExecSQL(
+                    "insert into users " +
+                    "(name, password) values " +
+                    "('" + login + "', '" + password +"');"
+            );
 
+            return Login(login, password);
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public User Login(String login, String password)
+    {
+        try
+        {
+            ResultSet rs = ExecQuerySQL("select id from users where name = '"
+                    + login + "' and password = '" + password + "';");
+
+            if(rs.isBeforeFirst())
+            {
+                rs.first();
+                Integer id = rs.getInt(1);
+                return new User(id, login, password);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        catch (SQLException e)
+        {
+            return null;
+        }
     }
 
     private boolean InitConnection()
@@ -104,14 +155,14 @@ public class DatabaseController
         try
         {
             ExecSQL("create table if not exists users (" +
-                    "id int not null, " +
+                    "id int not null auto_increment, " +
                     "name varchar(32) not null, " +
                     "password varchar(32) not null, " +
                     "primary key(id)" +
                     ");");
 
             ExecSQL("create table if not exists earnings(" +
-                    "id int not null," +
+                    "id int not null auto_increment," +
                     "money bigint not null," +
                     "userID int not null," +
                     "timestamp datetime," +
@@ -120,7 +171,7 @@ public class DatabaseController
                     ");");
 
             ExecSQL("create table if not exists expenses(" +
-                    "id int not null," +
+                    "id int not null auto_increment," +
                     "money bigint not null," +
                     "userID int not null," +
                     "timestamp datetime," +

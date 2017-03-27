@@ -1,9 +1,14 @@
 language: java
 jdk:
 - oraclejdk8
+services:
+    -mysql
 before_install: 
 - cd Budget/demo
 - chmod +x mvnw
+- mysql -u root -e 'create database if not exists budgetdb;'
+- mysql -u root -e "create user budget@localhost identified by 'koziadupa123';"
+- mysql -u root -e 'grant all on budgetdb to budget@localhost;'
 notifications:
   email:
     - krzysztof.stengert@hotmail.com
