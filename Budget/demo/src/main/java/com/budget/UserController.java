@@ -63,12 +63,10 @@ public class UserController {
     @RequestMapping("/loginUser")
     @ResponseBody
     public LoginUserResponse loginUser(@RequestParam(value="loginUser", required=true) String login, @RequestParam(value="pass", required=true) String password) {
-        Integer id = 1; //Get id from existing record in DB
-        if(id == User.INVALID_ID) {
+        User loggedUser = AppController.getInstance().getDbController().loginUser(login, password);
+        if(loggedUser == null || loggedUser.getID() == User.INVALID_ID) {
             return new LoginUserResponse("Invalid loginUser or password");
         }
-        // reminder: this can return NULL
-        User loggedUser = AppController.getInstance().getDbController().loginUser(login, password);
         return new LoginUserResponse(loggedUser);
     }
 }
