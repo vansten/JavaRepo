@@ -4,7 +4,6 @@ import com.budget.data.DatabaseController;
 import com.budget.data.Earning;
 import com.budget.data.Expense;
 import com.budget.data.User;
-import org.hibernate.validator.constraints.br.TituloEleitoral;
 import org.junit.*;
 
 import java.util.ArrayList;
