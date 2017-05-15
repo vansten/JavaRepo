@@ -2,6 +2,7 @@ package com.budget;
 
 import com.budget.data.User;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Created by Krzysztof on 3/26/2017.
@@ -50,6 +51,14 @@ class LoginUserResponse {
 
 @RestController
 public class UserController {
+//    @RequestMapping("/editUser/{id}")
+//    public ModelAndView editUser(@PathVariable(value="id") String id) {
+//        ModelAndView mav = new ModelAndView();
+//        mav.setViewName("editUser");
+//
+//        return mav;
+//    }
+
     @RequestMapping(
             path = "/registerUser",
             method = RequestMethod.GET )

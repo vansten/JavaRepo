@@ -16,16 +16,16 @@ public class AppController {
 
     private DatabaseController dbController = new DatabaseController();
 
-    @RequestMapping("/greeting")
-    public ModelAndView greeting(@RequestParam(value="name", required=false, defaultValue="World") String name) {
+    @RequestMapping("/main")
+    public ModelAndView main(@RequestParam(value="isLogged", required=false, defaultValue="false") Boolean isLogged) {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("greeting");
+        mav.setViewName("mainPage");
 
         // don't know where to put it, so I will put this here, hoping it will be called
         instance = this;
         dbController.initialize();  // need to shutdown it somewhere as well
 
-        mav.addObject("name", name);
+        mav.addObject("isLogged", isLogged);
         return mav;
     }
 

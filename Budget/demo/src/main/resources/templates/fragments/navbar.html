@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen"> </link>
+</head>
+<body>
+<nav class="navbar navbar-default" th:fragment="navbar">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Brand</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li th:if="${isLogged != true}" th:classappend="${#httpServletRequest.getRequestURI() == '/main' ? 'active':''}"><a href="main">Home <span class="sr-only">(current)</span></a></li>
+                <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/main' ? 'active':''}"><a href="main?isLogged=true">Home <span class="sr-only">(current)</span></a></li>
+                <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/incomes' ? 'active':''}"><a href="incomes">Incomes</a></li>
+                <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/outcomes' ? 'active':''}"><a href="outcomes">Outcomes</a></li>
+                <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/in_out' ? 'active':''}"><a href="in_out">Incomes + Outcomes</a></li>
+                <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/graphs' ? 'active':''}"><a href="graphs">Graphs</a></li>
+                <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/notifications' ? 'active':''}"><a href="notifications">Notifications <span class="badge" th:text="${notifications} ?: 0">5</span></a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li th:if="${isLogged != true}"><a href="#">Sign up</a></li>
+                <li th:if="${isLogged != true}"><a href="main?isLogged=true">Sign in</a></li>
+                <li class="dropdown" th:if="${isLogged != false}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="editUser">Edit profile</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="main?isLogged=false">Log out</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+</body>
+</html>

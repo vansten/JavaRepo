@@ -1,5 +1,7 @@
 package com.budget.data;
 
+import java.util.ArrayList;
+
 /**
  * Created by Krzysztof on 3/26/2017.
  */
@@ -9,6 +11,9 @@ public class User {
     protected Integer id;
     protected String login;
     protected String password;
+    protected String firstName;
+    protected String lastName;
+    protected ArrayList<String> notifications;
 
 
     protected User(Integer id, String login, String password) {

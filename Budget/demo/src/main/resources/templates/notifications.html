@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen"> </link>
+</head>
+<body>
+    <div class="container">
+        <div class="masthead">
+            <!-- When sending user the problem with array size will disappear -->
+            <div th:replace="fragments/navbar :: navbar (isLogged=true, notifications=1)"></div>
+        </div>
+
+        <h1>Notifications</h1>
+        <ul>
+            <th:block th:each="notification : ${notifications}">
+                <li th:text="${notification}"></li>
+            </th:block>
+        </ul>
+
+        <div class="footer">
+            <div th:replace="fragments/footer :: footer"></div>
+        </div>
+    </div>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</body>
+</html>
