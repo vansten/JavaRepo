@@ -2,6 +2,8 @@ package com.budget;
 
 import javax.validation.Valid;
 
+import com.budget.forms.LoginForm;
+import com.budget.forms.UserForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +19,6 @@ public class WebController extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         //Probably those routes will be moved f.e. to proper controllers for counting incomes etc.
-        registry.addViewController("/incomes").setViewName("incomes");
-        registry.addViewController("/outcomes").setViewName("outcomes");
         registry.addViewController("/in_out").setViewName("in_out");
         registry.addViewController("/graphs").setViewName("graphs");
         //registry.addViewController("/notifications").setViewName("notifications");

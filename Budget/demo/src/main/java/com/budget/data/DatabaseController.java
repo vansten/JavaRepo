@@ -117,7 +117,11 @@ public class DatabaseController
                 rs.first();
                 Integer id = rs.getInt(1);
                 User usr = new User(id, login, password);
-                loggedInUsers.add(usr);
+                if(usr != null) {
+                    usr.addEarnings(getEarningsForUser(usr));
+                    usr.addExpenses(getExpensesForUser(usr));
+                    loggedInUsers.add(usr);
+                }
                 return usr;
             }
             else

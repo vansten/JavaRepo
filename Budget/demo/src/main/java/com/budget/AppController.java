@@ -1,6 +1,7 @@
 package com.budget;
 
 import com.budget.data.DatabaseController;
+import com.budget.data.User;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ public class AppController {
     private static AppController instance;
 
     private DatabaseController dbController = new DatabaseController();
+    private User currentLoggedUser = null;
 
     @RequestMapping("/main")
     public ModelAndView main(@RequestParam(value="isLogged", required=false, defaultValue="false") Boolean isLogged) {
@@ -39,4 +41,6 @@ public class AppController {
     public DatabaseController getDbController() {
         return dbController;
     }
+    public void setLoggedUser(User loggedUser) { currentLoggedUser = loggedUser; }
+    public User getLoggedUser() { return currentLoggedUser; }
 }

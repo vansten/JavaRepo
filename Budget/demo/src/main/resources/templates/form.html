@@ -6,23 +6,33 @@
     <link href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen"> </link>
 </head>
 <body>
-    <form action="#" th:action="@{/editUser}" th:object="${userForm}" method="post">
-        <table>
-            <tr>
-                <td>First name:</td>
-                <td><input type="text" th:field="*{firstName}" /></td>
-                <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name error</td>
-            </tr>
-            <tr>
-                <td>Last name:</td>
-                <td><input type="text" th:field="*{lastName}" /></td>
-                <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name error</td>
-            </tr>
-            <tr>
-                <td><button type="submit">Submit</button></td>
-                <td><button type="button">Delete</button></td>
-            </tr>
-        </table>
-    </form>
+    <div class="container">
+        <div class="masthead">
+            <div th:replace="fragments/navbar :: navbar (isLogged=true)"></div>
+        </div>
+
+        <form action="#" th:action="@{/editUser}" th:object="${userForm}" method="post">
+            <table>
+                <tr>
+                    <td>First name:</td>
+                    <td><input type="text" th:field="*{firstName}" /></td>
+                    <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name error</td>
+                </tr>
+                <tr>
+                    <td>Last name:</td>
+                    <td><input type="text" th:field="*{lastName}" /></td>
+                    <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name error</td>
+                </tr>
+                <tr>
+                    <td><input type="submit">Submit</input></td>
+                    <td><input type="button">Delete</input></td>
+                </tr>
+            </table>
+        </form>
+
+        <div class="footer">
+            <div th:replace="fragments/footer :: footer"></div>
+        </div>
+    </div>
 </body>
 </html>

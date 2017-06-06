@@ -1,5 +1,6 @@
 package com.budget.data;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -15,6 +16,8 @@ public class User {
     protected String lastName;
     protected ArrayList<String> notifications;
 
+    protected ArrayList<Expense> expenses = new ArrayList<Expense>();
+    protected ArrayList<Earning> earnings = new ArrayList<Earning>();
 
     protected User(Integer id, String login, String password) {
         this.id = id;
@@ -29,4 +32,13 @@ public class User {
     public Integer getID() {
         return this.id;
     }
+
+    public void addExpense(Expense expense) { expenses.add(expense); }
+    public void addEarning(Earning earning) { earnings.add(earning); }
+    public void addExpenses(ArrayList<Expense> expenses) { this.expenses.addAll(expenses); }
+    public void addEarnings(ArrayList<Earning> earnings) { this.earnings.addAll(earnings); }
+    public void removeExpense(Expense expense) { expenses.remove(expense); }
+    public void removeEarning(Earning earning) { earnings.remove(earning); }
+    public ArrayList<Earning> getEarnings() { return earnings; }
+    public ArrayList<Expense> getExpenses() { return expenses; }
 }

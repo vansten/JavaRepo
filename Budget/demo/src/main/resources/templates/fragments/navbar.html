@@ -24,16 +24,16 @@
             <ul class="nav navbar-nav">
                 <li th:if="${isLogged != true}" th:classappend="${#httpServletRequest.getRequestURI() == '/main' ? 'active':''}"><a href="main">Home <span class="sr-only">(current)</span></a></li>
                 <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/main' ? 'active':''}"><a href="main?isLogged=true">Home <span class="sr-only">(current)</span></a></li>
-                <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/incomes' ? 'active':''}"><a href="incomes">Incomes</a></li>
-                <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/outcomes' ? 'active':''}"><a href="outcomes">Outcomes</a></li>
-                <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/in_out' ? 'active':''}"><a href="in_out">Incomes + Outcomes</a></li>
+                <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/incomes' ? 'active':''}"><a href="incomes">Add income</a></li>
+                <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/outcomes' ? 'active':''}"><a href="outcomes">Add outcome</a></li>
+                <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/in_out' ? 'active':''}"><a href="in_out">Summary</a></li>
                 <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/graphs' ? 'active':''}"><a href="graphs">Graphs</a></li>
                 <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/notifications' ? 'active':''}"><a href="notifications">Notifications <span class="badge" th:text="${notifications} ?: 0">5</span></a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li th:if="${isLogged != true}"><a href="#">Sign up</a></li>
-                <li th:if="${isLogged != true}"><a href="main?isLogged=true">Sign in</a></li>
+                <li th:if="${isLogged != true}"><a href="register">Sign up</a></li>
+                <li th:if="${isLogged != true}"><a href="login">Sign in</a></li>
                 <li class="dropdown" th:if="${isLogged != false}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User <span class="caret"></span></a>
                     <ul class="dropdown-menu">

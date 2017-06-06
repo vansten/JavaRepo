@@ -1,55 +1,20 @@
 package com.budget;
 
 import com.budget.data.User;
+import com.budget.forms.LoginForm;
+import com.budget.forms.RegisterForm;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 /**
  * Created by Krzysztof on 3/26/2017.
  */
 
-enum ResponseType {
-    SUCCESS,
-    FAILURE
-}
-
-class RegisterUserResponse {
-    public User user;
-    public String errorMessage;
-    public ResponseType responseType;
-
-    public RegisterUserResponse(User user) {
-        this.user = user;
-        this.responseType = this.user != null ? ResponseType.SUCCESS : ResponseType.FAILURE;
-        this.errorMessage = this.user != null ? "" : "Cannot registerUser user";
-    }
-
-    public RegisterUserResponse(String errorMessage) {
-        this.user = null;
-        this.responseType = ResponseType.FAILURE;
-        this.errorMessage = errorMessage;
-    }
-}
-
-class LoginUserResponse {
-    public User user;
-    public String errorMessage;
-    public ResponseType responseType;
-
-    public LoginUserResponse(User user) {
-        this.user = user;
-        this.responseType = this.user != null ? ResponseType.SUCCESS : ResponseType.FAILURE;
-        this.errorMessage = this.user != null ? "" : "Cannot log user in";
-    }
-
-    public LoginUserResponse(String errorMessage) {
-        this.user = null;
-        this.responseType = ResponseType.FAILURE;
-        this.errorMessage = errorMessage;
-    }
-}
-
-@RestController
+@Controller
 public class UserController {
 //    @RequestMapping("/editUser/{id}")
 //    public ModelAndView editUser(@PathVariable(value="id") String id) {
@@ -59,23 +24,39 @@ public class UserController {
 //        return mav;
 //    }
 
-    @RequestMapping(
-            path = "/registerUser",
-            method = RequestMethod.GET )
-    public RegisterUserResponse registerNewUser(@RequestParam(name="loginUser", required = true) String login, @RequestParam(name="pass", required = true)  String password) {
-        //TODO:
-        // Check password and loginUser
-        User newUser = AppController.getInstance().getDbController().registerUser(login, password);
-        return new RegisterUserResponse(newUser);
+    @GetMapping("/register")
+    public String showRegisterForm(RegisterForm registerForm) { return "registerForm"; }
+
+    @PostMapping("/register")
+    public String tryRegister(@Valid RegisterForm registerForm, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            return "redirect:register?isError=true";
+        }
+
+        User newUser = AppController.getInstance().getDbController().registerUser(registerForm.getLogin(), registerForm.getPassword());
+        if(newUser == null || newUser.getID() == User.INVALID_ID) {
+            return "redirect:register?isError=true";
+        }
+        AppController.getInstance().setLoggedUser(newUser);
+
+        return "redirect:main?isLogged=true";
     }
 
-    @RequestMapping("/loginUser")
-    @ResponseBody
-    public LoginUserResponse loginUser(@RequestParam(value="loginUser", required=true) String login, @RequestParam(value="pass", required=true) String password) {
-        User loggedUser = AppController.getInstance().getDbController().loginUser(login, password);
-        if(loggedUser == null || loggedUser.getID() == User.INVALID_ID) {
-            return new LoginUserResponse("Invalid loginUser or password");
+    @GetMapping("/login")
+    public String showLoginForm(LoginForm loginForm) { return "loginForm"; }
+
+    @PostMapping("/login")
+    public String tryLogin(@Valid LoginForm loginForm, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            return "redirect:login?isError=true";
         }
-        return new LoginUserResponse(loggedUser);
+
+        User loggedUser = AppController.getInstance().getDbController().loginUser(loginForm.getLogin(), loginForm.getPassword());
+        if(loggedUser == null || loggedUser.getID() == User.INVALID_ID) {
+            return "redirect:login?isError=true";
+        }
+        AppController.getInstance().setLoggedUser(loggedUser);
+
+        return "redirect:main?isLogged=true";
     }
 }
