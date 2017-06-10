@@ -1,7 +1,9 @@
 package com.budget.data;
 
 import java.time.Instant;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * Created by Maverick on 27.03.2017.
@@ -69,5 +71,23 @@ public class Entry {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    public void toList(List<Object> list) {
+        list.clear();
+        list.add(getID());
+        list.add(getName());
+        list.add(getValueAbsolute());
+        list.add(Date.from(getTimestamp()));
+        list.add(getSourceName());
+    }
+
+    public static void getFieldNames(List<String> names) {
+        names.clear();
+        names.add("ID");
+        names.add("Name");
+        names.add("Value");
+        names.add("Timestamp");
+        names.add("Source");
     }
 }

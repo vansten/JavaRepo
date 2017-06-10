@@ -23,31 +23,19 @@
             <table id="in_out_table" class="tablesorter">
                 <thead>
                     <tr>
-                        <th>
-                            Header1
-                        </th>
-                        <th>
-                            Header2
-                        </th>
+                        <th:block th:each="val: ${tableHeaders}">
+                            <th th:text="${val}"></th>
+                        </th:block>
                     </tr>
                 </thead>
                 <tbody>
+                <th:block th:each="row: ${tableRows}">
                     <tr>
-                        <td>
-                            1
-                        </td>
-                        <td>
-                            test1
-                        </td>
+                        <th:block th:each="val: ${row}">
+                            <td th:text="${val}"></td>
+                        </th:block>
                     </tr>
-                    <tr>
-                        <td>
-                            2
-                        </td>
-                        <td>
-                            test2
-                        </td>
-                    </tr>
+                </th:block>
                 </tbody>
 
             </table>
