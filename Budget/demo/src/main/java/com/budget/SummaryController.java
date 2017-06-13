@@ -19,6 +19,9 @@ import java.util.List;
 @Controller
 public class SummaryController {
 
+    private FilterUtility filter = new FilterUtility();
+
+
     @RequestMapping(value = "/in_out", method = RequestMethod.GET)
     public String showForm(Model model)
     {
@@ -43,23 +46,6 @@ public class SummaryController {
         return headers;
     }
 
-    private List<List<Object>> getTestRows() {
-        List<List<Object>> rows = new ArrayList<>();
-
-        for(int i = 0; i < 10; ++i) {
-            List<Object> row = new ArrayList<>();
-            row.add(i);
-            row.add("Piwo");
-            row.add(500.0f * (float)(i));
-            row.add(Date.from(Instant.now()));
-            row.add("Oblewanie wakacji");
-
-            rows.add(row);
-        }
-
-        return rows;
-    }
-
     private List<List<Object>> getRows() {
         List<List<Object>> rows = new ArrayList<>();
         ArrayList<Entry> entries =
@@ -68,6 +54,10 @@ public class SummaryController {
                 );
 
         for(Entry e : entries) {
+
+            if(!filter.isEntryPassingFilters(e))
+                continue;
+
             List<Object> objs = new ArrayList<>();
             e.toList(objs);
             rows.add(objs);
