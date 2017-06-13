@@ -41,7 +41,7 @@
         </p>
         <p>
             <form action="#" th:action="@{/filter}" th:object="${filterForm}" method="post">
-                <table>
+                <table class="filters">
                     <tr>
                         <td>Minimum Value:</td>
                         <td><input type="text" th:field="*{filterValueMin}" /></td>
@@ -59,7 +59,7 @@
                         <td th:if="${#fields.hasErrors('filterDateMax')}" th:errors="*{filterDateMax}">Date Max Error!</td>
                     </tr>
                     <tr>
-                        <td><input type="submit">Apply</input></td>
+                        <td><input type="submit" /></td>
                     </tr>
                 </table>
             </form>

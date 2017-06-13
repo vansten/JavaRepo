@@ -29,7 +29,7 @@ public class SummaryController {
 
 
     @RequestMapping(value = "/in_out", method = RequestMethod.GET)
-    public String showForm(Model model)
+    public String showForm(Model model, FilterForm filterForm)
     {
         final String formName = "in_out";
 
@@ -49,13 +49,8 @@ public class SummaryController {
         model.addAttribute("summaryHeaders", summaryHeaders);
         model.addAttribute("summaryRows", summaryRows);
 
-        model.addAttribute("filterForm", new FilterForm());
-
         return formName;
     }
-
-    @GetMapping("/filter")
-    public String showFilterForm(FilterForm filterForm) { return "in_out"; }
 
     @PostMapping("/filter")
     public String tryFilter(@Valid FilterForm filterForm, BindingResult bindingResult) {

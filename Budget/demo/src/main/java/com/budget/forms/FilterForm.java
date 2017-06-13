@@ -9,54 +9,54 @@ import java.time.LocalDate;
  */
 public class FilterForm {
     @NotNull
-    private Float minValue;
+    private Float filterValueMin;
     @NotNull
-    private Float maxValue;
-    @NotNull
-    @Size(min = 10)
-    private String minDate;
+    private Float filterValueMax;
     @NotNull
     @Size(min = 10)
-    private String maxDate;
+    private String filterDateMin;
+    @NotNull
+    @Size(min = 10)
+    private String filterDateMax;
 
-    public Float getMinValue() {
-        return minValue;
+    public Float getFilterValueMin() {
+        return filterValueMin;
     }
 
-    public void setMinValue(Float minValue) {
-        this.minValue = minValue;
+    public void setFilterValueMin(Float filterValueMin) {
+        this.filterValueMin = filterValueMin;
     }
 
-    public Float getMaxValue() {
-        return maxValue;
+    public Float getFilterValueMax() {
+        return filterValueMax;
     }
 
-    public void setMaxValue(Float maxValue) {
-        this.maxValue = maxValue;
+    public void setfilterValueMax(Float filterValueMax) {
+        this.filterValueMax = filterValueMax;
     }
 
-    public String getMinDate() {
-        return minDate;
+    public String getFilterDateMin() {
+        return filterDateMin;
     }
 
-    public LocalDate getMinDateAsLocalDate() {
-        return parseLocalDate(minDate);
+    public LocalDate getFilterDateMinAsLocalDate() {
+        return parseLocalDate(filterDateMin);
     }
 
-    public void setMinDate(String minDate) {
-        this.minDate = minDate;
+    public void setFilterDateMin(String filterDateMin) {
+        this.filterDateMin = filterDateMin;
     }
 
-    public String getMaxDate() {
-        return maxDate;
+    public String getFilterDateMax() {
+        return filterDateMax;
     }
 
-    public LocalDate getMaxDateAsLocalDate() {
-        return parseLocalDate(maxDate);
+    public LocalDate getFilterDateMaxAsLocalDate() {
+        return parseLocalDate(filterDateMax);
     }
 
-    public void setMaxDate(String maxDate) {
-        this.maxDate = maxDate;
+    public void setFilterDateMax(String filterDateMax) {
+        this.filterDateMax = filterDateMax;
     }
 
     private LocalDate parseLocalDate(String dateString) {

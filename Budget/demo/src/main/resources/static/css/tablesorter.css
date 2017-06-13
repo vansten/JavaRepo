@@ -37,3 +37,9 @@ table.tablesorter thead tr .headerSortDown {
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
 background-color: #8dbdd8;
 }
+
+table.filters thead tr th, table.filters tfoot tr th {
+	padding: 8px;
+	border: 8px solid #FFF;
+	background-color: #e6EEEE;
+}
