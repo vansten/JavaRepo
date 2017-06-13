@@ -16,28 +16,55 @@
         <div th:replace="fragments/navbar :: navbar (isLogged=true)"></div>
     </div>
 
-    <h1>Incomes + Outcomes</h1>
+    <h1>Summary</h1>
 
     <div>
         <p>
             <table class="tablesorter">
                 <thead>
-                    <tr>
-                        <th:block th:each="val: ${summaryHeaders}">
-                            <th th:text="${val}"/>
-                        </th:block>
-                    </tr>
+                <tr>
+                    <th:block th:each="val: ${summaryHeaders}">
+                        <th th:text="${val}"/>
+                    </th:block>
+                </tr>
                 </thead>
                 <tbody>
-                    <th:block th:each="row: ${summaryRows}">
-                        <tr>
-                            <th:block th:each="val: ${row}">
-                                <td th:text="${val}"></td>
-                            </th:block>
-                        </tr>
-                    </th:block>
+                <th:block th:each="row: ${summaryRows}">
+                    <tr>
+                        <th:block th:each="val: ${row}">
+                            <td th:text="${val}"></td>
+                        </th:block>
+                    </tr>
+                </th:block>
                 </tbody>
             </table>
+        </p>
+        <p>
+            <form action="#" th:action="@{/filter}" th:object="${filterForm}" method="post">
+                <table>
+                    <tr>
+                        <td>Minimum Value:</td>
+                        <td><input type="text" th:field="*{filterValueMin}" /></td>
+                        <td th:if="${#fields.hasErrors('filterValueMin')}" th:errors="*{filterValueMin}">Value Min Error!</td>
+                        <td>Maximum Value:</td>
+                        <td><input type="text" th:field="*{filterValueMax}" /></td>
+                        <td th:if="${#fields.hasErrors('filterValueMax')}" th:errors="*{filterValueMax}">Value Max Error!</td>
+                    </tr>
+                    <tr>
+                        <td>Minimum Date:</td>
+                        <td><input type="text" th:field="*{filterDateMin}" /></td>
+                        <td th:if="${#fields.hasErrors('filterDateMin')}" th:errors="*{filterDateMin}">Date Min Error!</td>
+                        <td>Maximum Date:</td>
+                        <td><input type="text" th:field="*{filterDateMax}" /></td>
+                        <td th:if="${#fields.hasErrors('filterDateMax')}" th:errors="*{filterDateMax}">Date Max Error!</td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit">Apply</input></td>
+                    </tr>
+                </table>
+            </form>
+        </p>
+        <p>
             <table id="in_out_table" class="tablesorter">
                 <thead>
                     <tr>

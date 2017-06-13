@@ -2,13 +2,18 @@ package com.budget;
 
 import com.budget.data.Entry;
 import com.budget.data.User;
+import com.budget.forms.FilterForm;
+import com.budget.forms.LoginForm;
 import com.budget.forms.UserForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,7 +49,23 @@ public class SummaryController {
         model.addAttribute("summaryHeaders", summaryHeaders);
         model.addAttribute("summaryRows", summaryRows);
 
+        model.addAttribute("filterForm", new FilterForm());
+
         return formName;
+    }
+
+    @GetMapping("/filter")
+    public String showFilterForm(FilterForm filterForm) { return "in_out"; }
+
+    @PostMapping("/filter")
+    public String tryFilter(@Valid FilterForm filterForm, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            return "redirect:in_out?isError=true";
+        }
+
+        // apply read filters
+
+        return "redirect:in_out";
     }
 
     private List<String> getSummaryHeaders() {
