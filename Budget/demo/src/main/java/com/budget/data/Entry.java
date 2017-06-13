@@ -1,6 +1,7 @@
 package com.budget.data;
 
 import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -18,7 +19,7 @@ public class Entry {
     protected String name;
     protected String sourceName;
 
-    protected Entry(Integer id, Float value, Integer userID,
+    public Entry(Integer id, Float value, Integer userID,
                  Instant timestamp, String name, String sourceName)
     {
         this.id = id;
@@ -78,7 +79,7 @@ public class Entry {
         list.add(getID());
         list.add(getName());
         list.add(getValueAbsolute());
-        list.add(Date.from(getTimestamp()));
+        list.add(getTimestamp().atZone(ZoneId.systemDefault()).toLocalDate());
         list.add(getSourceName());
     }
 

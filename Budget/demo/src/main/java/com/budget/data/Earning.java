@@ -7,7 +7,7 @@ import java.time.Instant;
  */
 public class Earning extends Entry {
 
-    protected Earning(Integer id, Float value, Integer userID,
+    public Earning(Integer id, Float value, Integer userID,
                    Instant timestamp, String name, String sourceName)
     {
         super(id, value, userID, timestamp, name, sourceName);

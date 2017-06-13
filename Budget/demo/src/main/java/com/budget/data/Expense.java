@@ -7,7 +7,7 @@ import java.time.Instant;
  */
 public class Expense extends Entry {
 
-    protected Expense(Integer id, Float value, Integer userID,
+    public Expense(Integer id, Float value, Integer userID,
                    Instant timestamp, String name, String sourceName) {
         super(id, value, userID, timestamp, name, sourceName);
     }

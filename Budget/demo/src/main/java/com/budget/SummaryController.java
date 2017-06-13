@@ -1,6 +1,7 @@
 package com.budget;
 
 import com.budget.data.Entry;
+import com.budget.data.User;
 import com.budget.forms.UserForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,17 +28,56 @@ public class SummaryController {
     {
         final String formName = "in_out";
 
-        if(AppController.getInstance().getLoggedUser() == null)
+        User loggedUser = AppController.getInstance().getLoggedUser();
+        if(loggedUser == null)
             return formName;
 
 //        List<List<Object>> rows = getTestRows();
         List<List<Object>> rows = getRows();
         List<String> headers = getHeaders();
 
+        List<String> summaryHeaders = getSummaryHeaders();
+        List<List<Object>> summaryRows = getSummaryRows(loggedUser);
+
         model.addAttribute("tableHeaders", headers);
         model.addAttribute("tableRows", rows);
+        model.addAttribute("summaryHeaders", summaryHeaders);
+        model.addAttribute("summaryRows", summaryRows);
 
         return formName;
+    }
+
+    private List<String> getSummaryHeaders() {
+        List<String> headers = new ArrayList<>();
+        headers.add("");
+        headers.add("Expenses");
+        headers.add("Earnings");
+        return headers;
+    }
+
+    private List<List<Object>> getSummaryRows(User loggedUser) {
+        ArrayList<List<Object>> rows = new ArrayList<>();
+        DataSummary dataSummary = DataProcessor.calculateDataSummary(loggedUser.getExpenses(), loggedUser.getEarnings());
+
+        ArrayList<Object> perDay = new ArrayList<>();
+        perDay.add("Per day");
+        perDay.add(dataSummary.getExpensesPerDay());
+        perDay.add(dataSummary.getEarningsPerDay());
+
+        ArrayList<Object> perMonth = new ArrayList<>();
+        perMonth.add("Per month");
+        perMonth.add(dataSummary.getExpensesPerMonth());
+        perMonth.add(dataSummary.getEarningsPerMonth());
+
+        ArrayList<Object> perYear = new ArrayList<>();
+        perYear.add("Per year");
+        perYear.add(dataSummary.getExpensesPerYear());
+        perYear.add(dataSummary.getEarningsPerYear());
+
+        rows.add(perDay);
+        rows.add(perMonth);
+        rows.add(perYear);
+        return rows;
     }
 
     private List<String> getHeaders() {

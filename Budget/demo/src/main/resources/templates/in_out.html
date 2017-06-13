@@ -20,6 +20,24 @@
 
     <div>
         <p>
+            <table class="tablesorter">
+                <thead>
+                    <tr>
+                        <th:block th:each="val: ${summaryHeaders}">
+                            <th th:text="${val}"/>
+                        </th:block>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="row: ${summaryRows}">
+                        <tr>
+                            <th:block th:each="val: ${row}">
+                                <td th:text="${val}"></td>
+                            </th:block>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
             <table id="in_out_table" class="tablesorter">
                 <thead>
                     <tr>
