@@ -2,8 +2,6 @@ package com.budget.data;
 
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -58,6 +56,8 @@ public class Entry {
     public String getSourceName() {
         return sourceName;
     }
+
+    public void setValue(Float value) { this.value = value; }
 
     @Override
     public boolean equals(Object o) {
