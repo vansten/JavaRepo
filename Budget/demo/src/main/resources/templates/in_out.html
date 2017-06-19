@@ -39,31 +39,33 @@
                 </tbody>
             </table>
         </p>
-        <p>
+        <p><br/>
             <form action="#" th:action="@{/filter}" th:object="${filterForm}" method="post">
                 <table class="filters">
                     <tr>
                         <td>Minimum Value:</td>
-                        <td><input type="text" th:field="*{filterValueMin}" /></td>
-                        <td th:if="${#fields.hasErrors('filterValueMin')}" th:errors="*{filterValueMin}">Value Min Error!</td>
+                        <td><input type="text" th:value="*{valueMin}" id="valueMin" name="valueMin" /></td>
+                        <td th:if="${#fields.hasErrors('valueMin')}" th:errors="*{valueMin}">Value Min Error!</td>
                         <td>Maximum Value:</td>
-                        <td><input type="text" th:field="*{filterValueMax}" /></td>
-                        <td th:if="${#fields.hasErrors('filterValueMax')}" th:errors="*{filterValueMax}">Value Max Error!</td>
+                        <td><input type="text" th:value="*{valueMax}" id="valueMax" name="valueMax" /></td>
+                        <td th:if="${#fields.hasErrors('valueMax')}" th:errors="*{valueMax}">Value Max Error!</td>
                     </tr>
+
                     <tr>
                         <td>Minimum Date:</td>
-                        <td><input type="text" th:field="*{filterDateMin}" /></td>
-                        <td th:if="${#fields.hasErrors('filterDateMin')}" th:errors="*{filterDateMin}">Date Min Error!</td>
+                        <td><input type="text" th:value="*{dateMin}" id="dateMin" name="dateMin" /></td>
+                        <td th:if="${#fields.hasErrors('dateMin')}" th:errors="*{dateMin}">Date Min Error!</td>
                         <td>Maximum Date:</td>
-                        <td><input type="text" th:field="*{filterDateMax}" /></td>
-                        <td th:if="${#fields.hasErrors('filterDateMax')}" th:errors="*{filterDateMax}">Date Max Error!</td>
+                        <td><input type="text" th:value="*{dateMax}" id="dateMax" name="dateMax" /></td>
+                        <td th:if="${#fields.hasErrors('dateMax')}" th:errors="*{dateMax}">Date Max Error!</td>
                     </tr>
+
                     <tr>
                         <td><input type="submit" /></td>
                     </tr>
                 </table>
             </form>
-        </p>
+        <br/></p>
         <p>
             <table id="in_out_table" class="tablesorter">
                 <thead>

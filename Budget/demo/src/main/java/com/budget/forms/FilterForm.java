@@ -3,63 +3,71 @@ package com.budget.forms;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Created by Maverick on 2017-06-13.
  */
 public class FilterForm {
+
+    static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
+
     @NotNull
-    private Float filterValueMin;
+    private Float valueMin;
     @NotNull
-    private Float filterValueMax;
+    private Float valueMax;
     @NotNull
     @Size(min = 10)
-    private String filterDateMin;
+    private String dateMin;
     @NotNull
     @Size(min = 10)
-    private String filterDateMax;
+    private String dateMax;
 
-    public Float getFilterValueMin() {
-        return filterValueMin;
+    public Float getValueMin() {
+        return valueMin;
     }
 
-    public void setFilterValueMin(Float filterValueMin) {
-        this.filterValueMin = filterValueMin;
+    public void setValueMin(Float valueMin) {
+        this.valueMin = valueMin;
     }
 
-    public Float getFilterValueMax() {
-        return filterValueMax;
+    public Float getValueMax() {
+        return valueMax;
     }
 
-    public void setfilterValueMax(Float filterValueMax) {
-        this.filterValueMax = filterValueMax;
+    public void setValueMax(Float valueMax) {
+        this.valueMax = valueMax;
     }
 
-    public String getFilterDateMin() {
-        return filterDateMin;
+    public String getDateMin() {
+        return dateMin;
     }
 
-    public LocalDate getFilterDateMinAsLocalDate() {
-        return parseLocalDate(filterDateMin);
+    public LocalDate getDateMinAsLocalDate() {
+        return LocalDate.parse(dateMin, DATE_FORMATTER);
     }
 
-    public void setFilterDateMin(String filterDateMin) {
-        this.filterDateMin = filterDateMin;
+    public void setDateMin(String dateMin) {
+        this.dateMin = dateMin;
     }
 
-    public String getFilterDateMax() {
-        return filterDateMax;
+    public void setDateMinAsLocalDate(LocalDate ld) {
+        this.dateMin = ld.format(DATE_FORMATTER);
     }
 
-    public LocalDate getFilterDateMaxAsLocalDate() {
-        return parseLocalDate(filterDateMax);
+    public String getDateMax() {
+        return dateMax;
     }
 
-    public void setFilterDateMax(String filterDateMax) {
-        this.filterDateMax = filterDateMax;
+    public LocalDate getDateMaxAsLocalDate() {
+        return LocalDate.parse(dateMax, DATE_FORMATTER);
     }
 
-    private LocalDate parseLocalDate(String dateString) {
-        return LocalDate.parse(dateString);
+    public void setDateMax(String dateMax) {
+        this.dateMax = dateMax;
+    }
+
+    public void setDateMaxAsLocalDate(LocalDate ld) {
+        this.dateMax = ld.format(DATE_FORMATTER);
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -25,7 +26,13 @@ import java.util.List;
 @Controller
 public class SummaryController {
 
-    private FilterUtility filter = new FilterUtility();
+    private FilterUtility filter;
+    private User prevLoggedUser = null;
+
+    @PostConstruct
+    public void Construct() {
+        filter = new FilterUtility();
+    }
 
 
     @RequestMapping(value = "/in_out", method = RequestMethod.GET)
@@ -36,6 +43,10 @@ public class SummaryController {
         User loggedUser = AppController.getInstance().getLoggedUser();
         if(loggedUser == null)
             return formName;
+
+        boolean userChanged = loggedUser != prevLoggedUser;
+        if(userChanged)
+            prevLoggedUser = loggedUser;
 
 //        List<List<Object>> rows = getTestRows();
         List<List<Object>> rows = getRows();
@@ -49,6 +60,14 @@ public class SummaryController {
         model.addAttribute("summaryHeaders", summaryHeaders);
         model.addAttribute("summaryRows", summaryRows);
 
+        filter.updateFromUserEntries(userChanged);
+
+        // apply filters to filter form
+        filterForm.setValueMin(filter.FilterValue.MinValue);
+        filterForm.setValueMax(filter.FilterValue.MaxValue);
+        filterForm.setDateMinAsLocalDate(filter.getDateMin());
+        filterForm.setDateMaxAsLocalDate(filter.getDateMax());
+
         return formName;
     }
 
@@ -59,6 +78,10 @@ public class SummaryController {
         }
 
         // apply read filters
+        filter.FilterValue.MinValue = filterForm.getValueMin();
+        filter.FilterValue.MaxValue = filterForm.getValueMax();
+        filter.setDateMin(filterForm.getDateMinAsLocalDate());
+        filter.setDateMax(filterForm.getDateMaxAsLocalDate());
 
         return "redirect:in_out";
     }
