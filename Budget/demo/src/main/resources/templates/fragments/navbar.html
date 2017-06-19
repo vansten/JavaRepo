@@ -27,8 +27,7 @@
                 <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/incomes' ? 'active':''}"><a href="incomes">Add income</a></li>
                 <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/outcomes' ? 'active':''}"><a href="outcomes">Add outcome</a></li>
                 <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/in_out' ? 'active':''}"><a href="in_out">Summary</a></li>
-                <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/graphs' ? 'active':''}"><a href="graphs">Graphs</a></li>
-                <li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/notifications' ? 'active':''}"><a href="notifications">Notifications <span class="badge" th:text="${notifications} ?: 0">5</span></a></li>
+                <!--<li th:if="${isLogged != false}" th:classappend="${#httpServletRequest.getRequestURI() == '/notifications' ? 'active':''}"><a href="notifications">Notifications <span class="badge" th:text="${notifications} ?: 0">5</span></a></li>-->
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
