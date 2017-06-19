@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -26,13 +27,22 @@ import java.util.List;
 @Controller
 public class SummaryController {
 
+    private static SummaryController instance = null;
+
     private FilterUtility filter;
+    private ChartUtility chart;
     private User prevLoggedUser = null;
+    private boolean userChangedEntries = false;
 
     @PostConstruct
     public void Construct() {
         filter = new FilterUtility();
+        chart = new ChartUtility();
+
+        instance = this;
     }
+
+    public SummaryController getInstance() { assert(instance != null); return instance; }
 
 
     @RequestMapping(value = "/in_out", method = RequestMethod.GET)
@@ -60,7 +70,10 @@ public class SummaryController {
         model.addAttribute("summaryHeaders", summaryHeaders);
         model.addAttribute("summaryRows", summaryRows);
 
-        filter.updateFromUserEntries(userChanged);
+        filter.updateFromUserEntries(userChanged || userChangedEntries);
+
+        if(userChangedEntries)
+            userChangedEntries = false;
 
         // apply filters to filter form
         filterForm.setValueMin(filter.FilterValue.MinValue);
@@ -68,7 +81,25 @@ public class SummaryController {
         filterForm.setDateMinAsLocalDate(filter.getDateMin());
         filterForm.setDateMaxAsLocalDate(filter.getDateMax());
 
+        // update chart data
+        chart.generateDatasets(loggedUser, filter);
+
         return formName;
+    }
+
+    @RequestMapping(value = "/chartValueDate", method = RequestMethod.GET)
+    public void drawChartValueDate(HttpServletResponse response) {
+        chart.drawToResponseValueDate(response);
+    }
+
+    @RequestMapping(value = "/chartNames", method = RequestMethod.GET)
+    public void drawChartNames(HttpServletResponse response) {
+        chart.drawToResponseNames(response);
+    }
+
+    @RequestMapping(value = "/chartSources", method = RequestMethod.GET)
+    public void drawChartSources(HttpServletResponse response) {
+        chart.drawToResponseSources(response);
     }
 
     @PostMapping("/filter")
@@ -84,6 +115,10 @@ public class SummaryController {
         filter.setDateMax(filterForm.getDateMaxAsLocalDate());
 
         return "redirect:in_out";
+    }
+
+    public void notifyUserChangedEntries() {
+        userChangedEntries = true;
     }
 
     private List<String> getSummaryHeaders() {
