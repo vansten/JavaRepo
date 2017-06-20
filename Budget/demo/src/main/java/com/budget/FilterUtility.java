@@ -102,7 +102,7 @@ public class FilterUtility {
     }
 
     public boolean isEntryPassingFilters(Entry entry) {
-        return isValueInRange(entry.getValue()) &&
+        return isValueInRange(entry.getValueAbsolute()) &&
                 isDateInRange(entry.getTimestamp().atZone(ZoneId.systemDefault()).toLocalDate());
     }
 

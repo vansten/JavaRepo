@@ -211,7 +211,7 @@ public class SummaryController {
         ArrayList<Expense> outputArray = new ArrayList<>();
 
         expenses.forEach(entry -> {
-            BigDecimal entryValue = BigDecimal.valueOf(entry.getValueAbsolute());
+            BigDecimal entryValue = BigDecimal.valueOf(entry.getValue());
             Float converted = 0f;
             try {
                 BigDecimal bd = converter.convertCurrency(entryValue, Currency.PLN,
@@ -238,7 +238,7 @@ public class SummaryController {
         ArrayList<Earning> outputArray = new ArrayList<>();
 
         earnings.forEach(entry -> {
-            BigDecimal entryValue = BigDecimal.valueOf(entry.getValueAbsolute());
+            BigDecimal entryValue = BigDecimal.valueOf(entry.getValue());
             Float converted = 0f;
             try {
                 BigDecimal bd = converter.convertCurrency(entryValue, Currency.PLN,
@@ -262,7 +262,7 @@ public class SummaryController {
 
         converter.setRefreshRateSeconds(86400);
 
-        BigDecimal entryValue = BigDecimal.valueOf(e.getValueAbsolute());
+        BigDecimal entryValue = BigDecimal.valueOf(e.getValue());
         Float converted = 0f;
         try {
             BigDecimal bd = converter.convertCurrency(entryValue, Currency.PLN,
