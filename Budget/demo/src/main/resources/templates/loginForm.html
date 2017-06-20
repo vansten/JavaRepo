@@ -14,12 +14,12 @@
     <form action="#" th:action="@{/login}" th:object="${loginForm}" method="post">
         <table>
             <tr>
-                <td>First name:</td>
+                <td>Login:</td>
                 <td><input type="text" th:field="*{login}" /></td>
                 <td th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Login error</td>
             </tr>
             <tr>
-                <td>Last name:</td>
+                <td>Password:</td>
                 <td><input type="password" th:field="*{password}" /></td>
                 <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</td>
             </tr>
